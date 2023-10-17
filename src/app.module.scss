@@ -1,0 +1,27 @@
+.container {
+  width: 98%;
+  height: 98vh;
+  background: rgba(236, 236, 236, 0.85) y;
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  margin: 5px;
+  .inputWrapper {
+    background-color: rgba(157, 197, 250, 0.772);
+    border: 1px solid gray;
+    width: 18%;
+    height: 100%;
+    border-radius: 10px;
+    border-style: dashed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .mapWrapper {
+    background: red;
+    width: 82%;
+    height: 100%;
+    border-radius: 10px;
+    margin-left: 10px;
+  }
+}
