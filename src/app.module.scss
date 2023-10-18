@@ -13,9 +13,7 @@
     height: 100%;
     border-radius: 10px;
     border-style: dashed;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    overflow: auto;
   }
   .mapWrapper {
     width: 82%;

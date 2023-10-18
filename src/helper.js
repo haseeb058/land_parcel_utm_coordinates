@@ -5,6 +5,8 @@ import { toLatLon } from "utils/UTM_convertor";
 
 export const useUploadSection = () => {
   const [latLngCoordinates, setLatLngCoordinates] = useState([]);
+  const [UTMcoordinates, setUTMcoordinates] = useState([]);
+
   const [zoomLevel, setZoomLevel] = useState(7);
   const [mapView, setMapView] = useState("roadmap");
 
@@ -34,6 +36,7 @@ export const useUploadSection = () => {
     if (file) {
       readXlsxFile(file)
         .then((rows) => {
+          setUTMcoordinates(rows?.slice(1));
           handleConvertUTMtoLatLng(rows?.slice(1));
         })
         .catch((error) => {
@@ -49,5 +52,6 @@ export const useUploadSection = () => {
     zoomLevel,
     center,
     mapView,
+    UTMcoordinates,
   };
 };

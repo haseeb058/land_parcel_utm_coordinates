@@ -10,6 +10,18 @@ const MapComponent = ({ polygon, center, zoom, mapView }) => {
     lng: ele.longitude,
   }));
 
+  const customMapStyle = [
+    {
+      featureType: "all",
+      elementType: "Labels",
+      stylers: [
+        {
+          visibility: "on",
+        },
+      ],
+    },
+  ];
+
   return isLoaded ? (
     <GoogleMap
       zoom={zoom}
@@ -17,6 +29,7 @@ const MapComponent = ({ polygon, center, zoom, mapView }) => {
       mapContainerStyle={containerStyle}
       options={{
         mapTypeId: mapView,
+        styles: mapView === "satellite" ? customMapStyle : [], // Apply custom style only in satellite view
       }}
     >
       <Polygon
