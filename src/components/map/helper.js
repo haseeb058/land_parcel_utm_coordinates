@@ -1,11 +1,6 @@
 import { useJsApiLoader } from "@react-google-maps/api";
 
 export const useMap = () => {
-  const center = {
-    lat: 11.0754,
-    lng: 103.7157,
-  };
-
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: "AIzaSyA9NGaaYjYQvWCbqaVdYxMWiA8iIb0VwrI",
   });
@@ -19,6 +14,5 @@ export const useMap = () => {
   return {
     containerStyle,
     isLoaded,
-    center,
   };
 };

@@ -1,5 +1,3 @@
-"use strict";
-
 var K0 = 0.9996;
 
 var E = 0.00669438;

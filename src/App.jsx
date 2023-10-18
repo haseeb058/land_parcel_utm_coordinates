@@ -4,7 +4,8 @@ import MapComponent from "./components/map";
 import style from "app.module.scss";
 
 const App = () => {
-  const { handleFileUpload, latLngCoordinates } = useUploadSection();
+  const { handleFileUpload, latLngCoordinates, center, zoomLevel, mapView } =
+    useUploadSection();
 
   return (
     <div className={style.container}>
@@ -12,7 +13,12 @@ const App = () => {
         <input type="file" accept=".xlsx" onChange={handleFileUpload} />
       </div>
       <div className={style.mapWrapper}>
-        <MapComponent polygon={latLngCoordinates} />
+        <MapComponent
+          polygon={latLngCoordinates}
+          center={center}
+          zoom={zoomLevel}
+          mapView={mapView}
+        />
       </div>
     </div>
   );
