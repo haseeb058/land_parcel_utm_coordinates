@@ -34,7 +34,7 @@ const MapComponent = () => {
 
       // Display the distance in the middle of each line
       new google.maps.InfoWindow({
-        content: `Distance: ${distance.toFixed(2)} meters`,
+        content: `Distance: ${distance?.toFixed(2)} meters`,
         position: midpoint,
       }).open(polygon.getMap());
     }
