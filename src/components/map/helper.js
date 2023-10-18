@@ -12,7 +12,7 @@ export const useMap = () => {
   const [center, setCenter] = useState(defaultCenter);
 
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAP_API_KEY,
+    googleMapsApiKey: "AIzaSyA9NGaaYjYQvWCbqaVdYxMWiA8iIb0VwrI",
   });
 
   const containerStyle = {
