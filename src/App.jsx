@@ -11,13 +11,16 @@ const App = () => {
     zoomLevel,
     mapView,
     UTMcoordinates,
+    isLoaded,
   } = useUploadSection();
+
   const tableRows = UTMcoordinates.map((item, index) => (
     <tr key={index}>
       <td>{item[0]}</td>
       <td>{item[1]}</td>
     </tr>
   ));
+
   return (
     <div className={style.container}>
       <div className={style.inputWrapper}>
@@ -40,6 +43,7 @@ const App = () => {
           center={center}
           zoom={zoomLevel}
           mapView={mapView}
+          isLoaded={isLoaded}
         />
       </div>
     </div>

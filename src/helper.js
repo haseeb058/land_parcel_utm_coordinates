@@ -1,3 +1,4 @@
+import { useJsApiLoader } from "@react-google-maps/api";
 import { useState } from "react";
 import readXlsxFile from "read-excel-file";
 
@@ -15,24 +16,34 @@ export const useUploadSection = () => {
     lng: 104.888535,
   });
 
-  const handleConvertUTMtoLatLng = (utmCoordinates) => {
-    const convertedCoordinates = utmCoordinates.map((coord) => {
+  const { isLoaded } = useJsApiLoader({
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAP_API_KEY,
+  });
+
+  const handleConvertUTMtoLatLng = async (utmCoordinates) => {
+    const convertedCoordinates = await utmCoordinates.map((coord) => {
       const latLng = toLatLon(coord[0], coord[1], 48, "P");
       return latLng;
     });
-    console.log(convertedCoordinates);
-    setLatLngCoordinates(convertedCoordinates);
-    setZoomLevel(15);
+
+    setLatLngCoordinates(
+      convertedCoordinates.map((ele) => ({
+        lat: ele.latitude,
+        lng: ele.longitude,
+      }))
+    );
+
     setCenter({
       lat: convertedCoordinates[0].latitude,
       lng: convertedCoordinates[0].longitude,
     });
+
+    setZoomLevel(15);
     setMapView("satellite");
   };
 
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
-
     if (file) {
       readXlsxFile(file)
         .then((rows) => {
@@ -46,12 +57,13 @@ export const useUploadSection = () => {
   };
 
   return {
-    handleFileUpload,
     handleConvertUTMtoLatLng,
+    handleFileUpload,
     latLngCoordinates,
-    zoomLevel,
-    center,
-    mapView,
     UTMcoordinates,
+    zoomLevel,
+    isLoaded,
+    mapView,
+    center,
   };
 };

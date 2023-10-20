@@ -1,26 +1,45 @@
-import React from "react";
-import { GoogleMap, Polygon } from "@react-google-maps/api";
-import { useMap } from "./helper";
+import React, { useState } from "react";
+import { GoogleMap, InfoWindow, Polygon } from "@react-google-maps/api";
 
-const MapComponent = ({ polygon, center, zoom, mapView }) => {
-  const { isLoaded, containerStyle } = useMap();
+const MapComponent = ({ polygon, center, zoom, mapView, isLoaded }) => {
+  const [InfoWindows, setInfoWindows] = useState([]);
 
-  const MapValues = polygon.map((ele) => ({
-    lat: ele.latitude,
-    lng: ele.longitude,
-  }));
+  const containerStyle = {
+    width: "100%",
+    height: "100%",
+    borderRadius: "10px",
+  };
 
-  const customMapStyle = [
-    {
-      featureType: "all",
-      elementType: "Labels",
-      stylers: [
-        {
-          visibility: "on",
-        },
-      ],
-    },
-  ];
+  const onLoad = (onLoadPolygon) => {
+    // Access the google.maps object
+
+    const { google } = window;
+
+    const windows = [];
+
+    for (let i = 0; i < onLoadPolygon.getPath()?.getLength(); i++) {
+      const pointA = onLoadPolygon.getPath().getAt(i);
+      const pointB = onLoadPolygon
+        .getPath()
+        .getAt((i + 1) % onLoadPolygon.getPath().getLength());
+      const distance = google.maps.geometry?.spherical.computeDistanceBetween(
+        pointA,
+        pointB
+      );
+      const midpoint = google.maps.geometry?.spherical.interpolate(
+        pointA,
+        pointB,
+        0.5
+      );
+
+      windows.push({
+        content: `${distance?.toFixed(2)} m`,
+        position: midpoint,
+      });
+    }
+
+    setInfoWindows(windows);
+  };
 
   return isLoaded ? (
     <GoogleMap
@@ -29,17 +48,29 @@ const MapComponent = ({ polygon, center, zoom, mapView }) => {
       mapContainerStyle={containerStyle}
       options={{
         mapTypeId: mapView,
-        styles: mapView === "satellite" ? customMapStyle : [], // Apply custom style only in satellite view
       }}
     >
-      <Polygon
-        paths={MapValues}
-        options={{
-          strokeOpacity: 0.8,
-          strokeColor: "#FFD580",
-          fillColor: "#FFA500",
-        }}
-      />
+      {polygon.length > 1 && (
+        <Polygon
+          paths={polygon}
+          onLoad={onLoad}
+          options={{
+            strokeOpacity: 0.8,
+            strokeColor: "#FFD580",
+            fillColor: "#FFA500",
+          }}
+        />
+      )}
+      {InfoWindows.length > 1 &&
+        InfoWindows?.map((infoWindow, index) => (
+          <InfoWindow
+            key={`infowindow-${infoWindow.content}-${index}`}
+            position={infoWindow.position}
+            visible={false}
+          >
+            <div>{infoWindow.content}</div>
+          </InfoWindow>
+        ))}
     </GoogleMap>
   ) : null;
 };
